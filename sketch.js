@@ -6,6 +6,7 @@ var count = 0;
 var grp1,grp2,grp3,grp4;
 var lives = []
 var gameState = 0;
+localStorage.HighestScore = 0;
 function preload()
 {
 	balloonImage = loadImage("balloon.png")
@@ -47,23 +48,25 @@ function setup() {
 
 function draw() {
 	background(0);
+	
 	if(gameState === 0){
-	if(keyWentDown(UP_ARROW)){
+		if(localStorage.HighestScore <score){ localStorage.HighestScore = score; }
+	if(keyWentDown(UP_ARROW) || keyWentDown("W")){
 		prot.x = 400
 		prot.y = 285
 		prot.width = 100
 		prot.height = 20
-}else if(keyWentDown(LEFT_ARROW)){
+}else if(keyWentDown(LEFT_ARROW) || keyWentDown("A")){
 	prot.x = 335
 	prot.y = 350
 	prot.width = 20
 	prot.height = 100
-}else if(keyWentDown(RIGHT_ARROW)){
+}else if(keyWentDown(RIGHT_ARROW) || keyWentDown("D")){
 	prot.x = 465
 	prot.y = 350
 	prot.width = 20
 	prot.height = 100
-}else if(keyWentDown(DOWN_ARROW)){
+}else if(keyWentDown(DOWN_ARROW) || keyWentDown("S")){
 	prot.x = 400
 	prot.y = 415
 	prot.width = 100
@@ -110,7 +113,7 @@ if(balloon.isTouching(grp1) || balloon.isTouching(grp2) || balloon.isTouching(gr
 	grp3.destroyEach()
 	grp4.destroyEach()
 	if(score>200){
-	score -= 200
+	
 	}
 	if(lives.length>0){
 		lives[lives.length-1].visible = false
@@ -128,15 +131,24 @@ if(balloon.isTouching(grp1) || balloon.isTouching(grp2) || balloon.isTouching(gr
 		gameState = 1
 		}
 }
+fill("orange")
+textSize(20)
+text("High Score = "+localStorage.HighestScore,600,100);  
+	
 bullets1()
 bullets2()
 bullets3()
 bullets4()
 }
 else if(gameState === 1){
-	fill("yellow")
+	fill("orange")
 	textSize(25)
 	text("PRESS ENTER TO RESTART",250,250)
+	if(localStorage.HighestScore>0){
+		fill("yellow")
+		textSize(20)
+		text("High Score = "+localStorage.HighestScore,600,100);  
+	   }
 	if(keyDown("ENTER")){
 		gameState = 0
 		prot.visible = true
@@ -149,7 +161,7 @@ else if(gameState === 1){
 		life4.visible = true
 		life5.visible = true
 		score = 0
-
+		
 	}
 	
 }
@@ -158,7 +170,7 @@ else if(gameState === 1){
 
   fill("orange")
   textSize(20)
-  text("Score :" +score,630,50)
+  text("Score :" +score,600,50)
 
   drawSprites();
 }
